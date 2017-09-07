@@ -77,10 +77,13 @@ class DS_01_Server_runnable implements Runnable {
 
 public class DS_01_Server {
 	public static String connected_client;
+	public static String client_Address;
+	public static int client_Port;
 
 	public static void main(String args[]) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(0);
-		System.out.println("Scoket Created on Port : " + serverSocket.getLocalPort());
+		//ServerSocket serverSocket = new ServerSocket(0);
+		ServerSocket serverSocket = new ServerSocket(8080);
+		//TODO Change this on actual submission 
 		System.out.println("Socket is created : " + serverSocket.toString());
 		while (true) {
 
@@ -89,8 +92,10 @@ public class DS_01_Server {
 			// + " on port " + serverSocket.getLocalPort() + "...");
 			Socket server = serverSocket.accept();
 			System.out.println("New client connection done : " + server.getRemoteSocketAddress());
-
 			connected_client = server.getRemoteSocketAddress().toString();
+			client_Address = server.getInetAddress().toString();
+			client_Port = server.getPort();
+			System.out.println("[["+client_Address+"]["+client_Port+"]]");
 			DS_01_Server_runnable R1 = new DS_01_Server_runnable(server);
 			R1.start();
 
