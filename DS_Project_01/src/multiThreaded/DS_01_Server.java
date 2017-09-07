@@ -13,7 +13,6 @@ class DS_01_Server_runnable implements Runnable {
 
 	public DS_01_Server_runnable(Socket server) throws IOException {
 		this.server = server;
-		// serverSocket = new ServerSocket(80);
 		// serverSocket.setSoTimeout(100000);
 	}
 
@@ -28,7 +27,6 @@ class DS_01_Server_runnable implements Runnable {
 				int i;
 				byte[] buffer = new byte[2048];
 				StringBuffer request = new StringBuffer(2048);
-				;
 				try {
 					i = input.read(buffer);
 					for (int j = 0; j < i; j++) {
@@ -41,8 +39,7 @@ class DS_01_Server_runnable implements Runnable {
 				}
 				// System.out.println("Printed the GET request");
 				String request_tocken = request.toString();
-				String[] lines = request_tocken.split(System
-						.getProperty("line.separator"));
+				String[] lines = request_tocken.split(System.getProperty("line.separator"));
 				for (int k = 0; k < lines.length; k++) {
 					// System.out.println(":: " + lines[0] + lines.length);
 				}
@@ -83,7 +80,7 @@ public class DS_01_Server {
 
 	public static void main(String args[]) throws IOException {
 		ServerSocket serverSocket = new ServerSocket(0);
-		System.out.println("Scoket Created on Port : "+serverSocket.getLocalPort());
+		System.out.println("Scoket Created on Port : " + serverSocket.getLocalPort());
 		System.out.println("Socket is created : " + serverSocket.toString());
 		while (true) {
 
@@ -91,8 +88,7 @@ public class DS_01_Server {
 			// System.out.println("Host Name :" + serverSocket.toString()
 			// + " on port " + serverSocket.getLocalPort() + "...");
 			Socket server = serverSocket.accept();
-			System.out.println("New client connection done : "
-					+ server.getRemoteSocketAddress());
+			System.out.println("New client connection done : " + server.getRemoteSocketAddress());
 
 			connected_client = server.getRemoteSocketAddress().toString();
 			DS_01_Server_runnable R1 = new DS_01_Server_runnable(server);
