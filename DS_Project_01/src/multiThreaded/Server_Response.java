@@ -97,7 +97,6 @@ public class Server_Response {
 					output.write(bytes, 0, ch);
 					ch = fis.read(bytes, 0, 2048);
 				}
-
 				returncode = 404;
 			}
 		} catch (Exception e) {

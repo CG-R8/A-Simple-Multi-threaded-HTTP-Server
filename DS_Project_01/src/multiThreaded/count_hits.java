@@ -17,9 +17,8 @@ public class count_hits {
 		req_res_array[count][1] = "|";
 		req_res_array[count][2] = request_ip;
 		req_res_array[count][3] = "|";
-		req_res_array[count][4] = ""+port;
+		req_res_array[count][4] = "" + port;
 		req_res_array[count][5] = "|";
-		
 
 		int res_count = 1;
 		for (int i = 0; i < count; i++) {
@@ -28,7 +27,8 @@ public class count_hits {
 			}
 		}
 		req_res_array[count][6] = "" + res_count;
-		//System.out.println("" + Arrays.toString(req_res_array[count]).replaceAll("(\\[|\\]|,)", ""));
+		// System.out.println("" +
+		// Arrays.toString(req_res_array[count]).replaceAll("(\\[|\\]|,)", ""));
 		count++;
 
 		System.out.println("====================================");
