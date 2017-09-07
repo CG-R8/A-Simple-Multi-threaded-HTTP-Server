@@ -44,20 +44,16 @@ public class Server_Response {
 			System.out.println("File name ------------->>> "+Client_Request.URL);
 			Client_Request.URL = "www/"+Client_Request.URL;			// Appended www directory
 			File requestedfile = new File(Client_Request.URL);
-			String RFC_7231_format = "EEE, dd MMM yyyy HH:mm:ss zzz";
-			SimpleDateFormat sdf = new SimpleDateFormat(RFC_7231_format);
-			sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-			
-			// String date =
-			// java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME
-			// .format(ZonedDateTime.now(ZoneId.of("GMT")));
+			String RFC_7231_format_string = "EEE, dd MMM yyyy HH:mm:ss zzz";
+			SimpleDateFormat RFC_7231_format = new SimpleDateFormat(RFC_7231_format_string);
+			RFC_7231_format.setTimeZone(TimeZone.getTimeZone("GMT"));
 			Date today_date = new Date();
 			
-			String date = sdf.format(today_date);
+			String date = RFC_7231_format.format(today_date);
 			long last_modified = requestedfile.lastModified();
 			Date last_modified_date = new Date(last_modified);
 			
-			String last_modified_date_string = sdf.format(last_modified_date);
+			String last_modified_date_string = RFC_7231_format.format(last_modified_date);
 			
 			String content_type = new MimetypesFileTypeMap().getContentType(requestedfile);
 			long content_length = requestedfile.length();
