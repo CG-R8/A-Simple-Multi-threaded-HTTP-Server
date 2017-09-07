@@ -82,7 +82,8 @@ public class DS_01_Server {
 	public static String connected_client;
 
 	public static void main(String args[]) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(8080);
+		ServerSocket serverSocket = new ServerSocket(0);
+		System.out.println("Scoket Created on Port : "+serverSocket.getLocalPort());
 		System.out.println("Socket is created : " + serverSocket.toString());
 		while (true) {
 
