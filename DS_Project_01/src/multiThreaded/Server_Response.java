@@ -37,7 +37,8 @@ public class Server_Response {
 		byte[] bytes = new byte[2048];
 		FileInputStream fis = null;
 		try {
-			// System.out.println(Client_Request.URL);
+			System.out.println("File name ------------->>> "+Client_Request.URL);
+			Client_Request.URL = "www/"+Client_Request.URL;
 			File requestedfile = new File(Client_Request.URL);
 			// String date =
 			// java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME
@@ -83,7 +84,7 @@ public class Server_Response {
 				byte[] b = fail_response(date).getBytes();
 				output.write(b);
 
-				fis = new FileInputStream("lmn.html");
+				fis = new FileInputStream("404_html.html");
 				int ch = fis.read(bytes, 0, 2048);
 
 				while (ch != -1) {
