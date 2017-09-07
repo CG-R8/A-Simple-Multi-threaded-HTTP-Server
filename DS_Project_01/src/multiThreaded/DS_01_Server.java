@@ -51,7 +51,7 @@ class DS_01_Server_runnable implements Runnable {
 				}
 				Server_Response SR = new Server_Response();
 				if (SR.sendStaticResource(output) != 0) {
-					// System.out.println("We are good to send the reponse");
+					// System.out.println("We are good to send the response ");
 				}
 				System.out.println("====================================");
 				System.out.println("Socket closed");
