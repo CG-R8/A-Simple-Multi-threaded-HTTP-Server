@@ -32,6 +32,7 @@ public class Server_Response {
 	public String fail_response(String date) {
 		String Resp_headers = "HTTP/1.0 404 Not Found\r\n";
 		Resp_headers = Resp_headers + "Date: " + date + "\r\n";
+		//Resp_headers = Resp_headers + "Please renter the URL correctly" + "\r\n";
 		Resp_headers = Resp_headers + "\r\n";
 		return Resp_headers;
 	}
@@ -40,16 +41,43 @@ public class Server_Response {
 		int returncode = 0;
 		byte[] bytes = new byte[2048];
 		FileInputStream fis = null;
+		String RFC_7231_format_string = "EEE, dd MMM yyyy HH:mm:ss zzz";
+		SimpleDateFormat RFC_7231_format = new SimpleDateFormat(RFC_7231_format_string);
+		RFC_7231_format.setTimeZone(TimeZone.getTimeZone("GMT"));
+		Date today_date = new Date();
+		
+		String date = RFC_7231_format.format(today_date);
 		try {
 			System.out.println("File name ------------->>> "+Client_Request.URL);
-			Client_Request.URL = "www/"+Client_Request.URL;			// Appended www directory
-			File requestedfile = new File(Client_Request.URL);
-			String RFC_7231_format_string = "EEE, dd MMM yyyy HH:mm:ss zzz";
-			SimpleDateFormat RFC_7231_format = new SimpleDateFormat(RFC_7231_format_string);
-			RFC_7231_format.setTimeZone(TimeZone.getTimeZone("GMT"));
-			Date today_date = new Date();
+			// What if the file name is null.
+			if (Client_Request.URL.isEmpty())
+			{
+				System.out.println("------------------We Got blank URL------------------------");
+				
+
+				// file not found
+				System.out.println("File DO NOT Exist");
+				byte[] b = fail_response(date).getBytes();
+				output.write(b);
+
+				fis = new FileInputStream("404_html.html");
+				int ch = fis.read(bytes, 0, 2048);
+
+				while (ch != -1) {
+					output.write(bytes, 0, ch);
+					ch = fis.read(bytes, 0, 2048);
+				}
+				returncode = 404;
 			
-			String date = RFC_7231_format.format(today_date);
+				
+			}
+			else
+			{
+			Client_Request.URL = "www/"+Client_Request.URL;			// Appended www directory
+			
+			
+			File requestedfile = new File(Client_Request.URL);
+			
 			long last_modified = requestedfile.lastModified();
 			Date last_modified_date = new Date(last_modified);
 			
@@ -99,9 +127,12 @@ public class Server_Response {
 				}
 				returncode = 404;
 			}
+			
+			}
 		} catch (Exception e) {
 			// thrown if cannot instantiate a File object
-			System.out.println("This is the error in server response." + e.toString());
+			System.err.println("This is the error in server response." + e.toString());
+			e.printStackTrace();
 
 		} finally {
 			if (fis != null)
