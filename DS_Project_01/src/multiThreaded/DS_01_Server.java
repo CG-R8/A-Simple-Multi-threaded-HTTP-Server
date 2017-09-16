@@ -80,7 +80,7 @@ public class DS_01_Server {
 		}
 		ServerSocket serverSocket = new ServerSocket(0);
 		//ServerSocket serverSocket = new ServerSocket(8080);
-		System.out.println("Server socket is created "+" : "+serverSocket.getInetAddress().getCanonicalHostName()+" on the port : " + serverSocket.getLocalPort() );
+		System.out.println("Server socket is created on the port : " + serverSocket.getLocalPort() );
 		while (true) {
 			Socket server = serverSocket.accept();
 			System.out.println("New client connection done : " + server.getRemoteSocketAddress());
