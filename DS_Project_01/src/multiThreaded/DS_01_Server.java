@@ -5,23 +5,17 @@ import java.io.*;
 
 class DS_01_Server_runnable implements Runnable {
 	private Thread t;
-	private String threadName;
-
 	public OutputStream output = null;
-
 	private Socket server;
 
 	public DS_01_Server_runnable(Socket server) throws IOException {
 		this.server = server;
-		// serverSocket.setSoTimeout(100000);
 	}
 
-	@SuppressWarnings({ })
+	@SuppressWarnings({})
 	public void run() {
-		// while (true)
 		{
 			try {
-
 				InputStream input = server.getInputStream();
 				output = server.getOutputStream();
 				int i;
@@ -32,12 +26,11 @@ class DS_01_Server_runnable implements Runnable {
 					for (int j = 0; j < i; j++) {
 						request.append((char) buffer[j]);
 					}
-					// System.out.println(request.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 					i = -1;
 				}
-				// System.out.println("Printed the GET request");
+				// Printed the GET request
 				String request_tocken = request.toString();
 				String[] lines = request_tocken.split(System.getProperty("line.separator"));
 				for (int k = 0; k < lines.length; k++) {
@@ -57,11 +50,9 @@ class DS_01_Server_runnable implements Runnable {
 				System.out.println("Socket closed");
 				server.close();
 			} catch (SocketTimeoutException s) {
-				System.out.println("Socket timed out!");
-				// break;
+				System.err.println("Socket timed out!");
 			} catch (IOException e) {
-				e.printStackTrace();
-				// break;
+				System.err.println("IOException occured while reading client request");
 			}
 		}
 	}
@@ -80,19 +71,24 @@ public class DS_01_Server {
 	public static int client_Port;
 
 	public static void main(String args[]) throws IOException {
-		// ServerSocket serverSocket = new ServerSocket(0);
-		ServerSocket serverSocket = new ServerSocket(8080);
-		// TODO Change this on actual submission
-		System.out.println("Socket is created : " + serverSocket.toString());
+		File wwwDirctory = new File("www");
+		if (wwwDirctory.exists()) {
+			// System.out.println("WWW directory exist");
+		} else {
+			System.err.println("WWW directory is missing.... Existing server.....");
+			System.exit(0);
+		}
+		ServerSocket serverSocket = new ServerSocket(0);
+		//ServerSocket serverSocket = new ServerSocket(8080);
+		System.out.println("Server is created : " + serverSocket.toString());
 		while (true) {
-
 			Socket server = serverSocket.accept();
 			System.out.println("New client connection done : " + server.getRemoteSocketAddress());
 			connected_client = server.getRemoteSocketAddress().toString();
 			client_Address = server.getInetAddress().toString();
 			client_Address = client_Address.substring(1);
 			client_Port = server.getPort();
-			System.out.println("[[" + client_Address + "][" + client_Port + "]]");
+			// System.out.println("[[" + client_Address + "][" + client_Port + "]]");
 			DS_01_Server_runnable R1 = new DS_01_Server_runnable(server);
 			R1.start();
 		}

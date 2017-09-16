@@ -5,17 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-//import java.time.ZoneId;
-//import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.TimeZone;
-
 import javax.activation.MimetypesFileTypeMap;
 
 public class Server_Response {
-
 	public String success_reponse(String date, String last_modified_date_string, long content_length,
 			String content_type) {
 		String Resp_headers = "HTTP/1.0 200 OK\r\n";
@@ -25,7 +19,6 @@ public class Server_Response {
 		Resp_headers = Resp_headers + "Content-Length: " + content_length + "\r\n";
 		Resp_headers = Resp_headers + "Content-Type: " + content_type + "\r\n";
 		Resp_headers = Resp_headers + "\r\n";
-
 		count_hits.process_req_resourses();
 		return Resp_headers;
 	}
@@ -33,7 +26,6 @@ public class Server_Response {
 	public String fail_response(String date) {
 		String Resp_headers = "HTTP/1.0 404 Not Found\r\n";
 		Resp_headers = Resp_headers + "Date: " + date + "\r\n";
-		// Resp_headers = Resp_headers + "Please renter the URL correctly" +"\r\n";
 		Resp_headers = Resp_headers + "\r\n";
 		return Resp_headers;
 	}
@@ -46,46 +38,33 @@ public class Server_Response {
 		SimpleDateFormat RFC_7231_format = new SimpleDateFormat(RFC_7231_format_string);
 		RFC_7231_format.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Date today_date = new Date();
-
 		String date = RFC_7231_format.format(today_date);
 		try {
-			//System.out.println("File name ------------->>> " + Client_Request.URL);
+			// System.out.println("File name ------------->>> " + Client_Request.URL);
 			// What if the file name is null.
 			if (Client_Request.URL.isEmpty()) {
-				//System.out.println("------------------We Got blank URL------------------------");
-
-				// file not found
-				System.out.println("File DO NOT Exist");
+				// System.out.println("------------------We Got blank URL------------------------");
+				// System.out.println("File DO NOT Exist");
 				byte[] b = fail_response(date).getBytes();
 				output.write(b);
-
 				fis = new FileInputStream("404_html.html");
 				int ch = fis.read(bytes, 0, 2048);
-
 				while (ch != -1) {
 					output.write(bytes, 0, ch);
 					ch = fis.read(bytes, 0, 2048);
 				}
 				returncode = 404;
-
 			} else {
 				Client_Request.URL = "www/" + Client_Request.URL; // Appended www directory
-
 				File requestedfile = new File(Client_Request.URL);
-
 				long last_modified = requestedfile.lastModified();
 				Date last_modified_date = new Date(last_modified);
-
 				String last_modified_date_string = RFC_7231_format.format(last_modified_date);
-
 				String content_type = new MimetypesFileTypeMap().getContentType(requestedfile);
 				long content_length = requestedfile.length();
-				//System.out.println("Last modified : " + last_modified_date_string + "\nContent Type: " + content_type);
-				//System.out.println("Content Length : " + content_length);
 				if (requestedfile.exists()) {
-
 					if (Client_Request.URL.contains("404.gif") == true) {
-						//System.out.println("404gif Exist sending failure respose ");
+						// System.out.println("404gif Exist sending failure respose ");
 						fis = new FileInputStream(requestedfile);
 						int ch = fis.read(bytes, 0, 2048);
 						byte[] b = fail_response(date).getBytes();
@@ -107,34 +86,28 @@ public class Server_Response {
 							ch = fis.read(bytes, 0, 2048);
 						}
 					}
-
 				} else {
 					// file not found
 					// System.out.println("FILE DO NOT Exist preparing 404 HTML : sending failure respose ");
 					byte[] b = fail_response(date).getBytes();
 					output.write(b);
-
 					fis = new FileInputStream("404_html.html");
 					int ch = fis.read(bytes, 0, 2048);
-
 					while (ch != -1) {
 						output.write(bytes, 0, ch);
 						ch = fis.read(bytes, 0, 2048);
 					}
 					returncode = 404;
 				}
-
 			}
 		} catch (Exception e) {
 			// thrown if cannot instantiate a File object
 			System.err.println("This is the error in server response." + e.toString());
 			e.printStackTrace();
-
 		} finally {
 			if (fis != null)
 				fis.close();
 		}
 		return returncode;
 	}
-
 }
