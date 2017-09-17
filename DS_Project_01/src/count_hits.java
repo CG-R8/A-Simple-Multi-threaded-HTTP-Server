@@ -1,4 +1,4 @@
-package multiThreaded;
+
 
 public class count_hits {
 	static String[][] req_res_array = new String[50][7];
