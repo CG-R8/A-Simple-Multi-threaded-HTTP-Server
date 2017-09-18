@@ -1,7 +1,6 @@
-
-
 import java.net.*;
 import java.io.*;
+import java.net.InetAddress;
 
 class DS_01_Server_runnable implements Runnable {
 	private Thread t;
@@ -47,7 +46,7 @@ class DS_01_Server_runnable implements Runnable {
 					// System.out.println("We are good to send the response ");
 				}
 				System.out.println("====================================");
-				System.out.println("Socket closed");
+				// System.out.println("Socket closed");
 				server.close();
 			} catch (SocketTimeoutException s) {
 				System.err.println("Socket timed out!");
@@ -79,11 +78,16 @@ public class DS_01_Server {
 			System.exit(0);
 		}
 		ServerSocket serverSocket = new ServerSocket(0);
-		//ServerSocket serverSocket = new ServerSocket(8080);
-		System.out.println("Server socket is created on the port : " + serverSocket.getLocalPort() );
+		// ServerSocket serverSocket = new ServerSocket(8080);
+
+		InetAddress ip = InetAddress.getLocalHost();
+		System.out.println("\n\n-----------------------------SERVER is Started------------------------------");
+		System.out.println("IP address:Port " + ip.getCanonicalHostName() + ":" + serverSocket.getLocalPort());
+
 		while (true) {
 			Socket server = serverSocket.accept();
-			System.out.println("New client connection done : " + server.getRemoteSocketAddress());
+			// System.out.println("New client connection done : " +
+			// server.getRemoteSocketAddress());
 			connected_client = server.getRemoteSocketAddress().toString();
 			client_Address = server.getInetAddress().toString();
 			client_Address = client_Address.substring(1);
